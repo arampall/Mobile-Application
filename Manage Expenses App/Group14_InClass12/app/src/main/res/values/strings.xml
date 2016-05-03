@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Group14_InClass12</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="login_button">Login</string>
+    <string name="create_account_button">Create New Account</string>
+    <string name="fullname_label">Full Name</string>
+    <string name="signup_button">Signup</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="add_expense_title">Add An Expense</string>
+    <string name="expense_name">Expense Name</string>
+    <string name="expense_category">Category</string>
+    <string name="expense_amount">Amount</string>
+    <string name="expense_date">Date</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="expense_details">Expense Details</string>
+    <string name="details_name_label">Name</string>
+    <string name="details_category">Category</string>
+    <string name="details_amount">Amount</string>
+    <string name="category_date">Date</string>
+    <string name="delete_expense">Delete Expense</string>
+    <string-array name="categories">
+        <item>Groceries</item>
+        <item>Invoice</item>
+        <item>Transportation</item>
+        <item>Shopping</item>
+        <item>Rent</item>
+        <item>Trips</item>
+        <item>Utilities</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
