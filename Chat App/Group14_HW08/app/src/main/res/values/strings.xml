@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Stay In Touch</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="login_button">Login</string>
+    <string name="create_account_button">Create New Account</string>
+    <string name="fullname_label">Full Name</string>
+    <string name="signup_button">Signup</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="phoneLabel">Phone Number</string>
+    <string name="password_conf_label">Confirm Password</string>
+    <string name="send_button">Send</string>
+    <string name="text_hint">Enter Message</string>
+    <string name="view_contact">View Contact</string>
+    <string name="call_contact">Call Contact</string>
+</resources>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Homework 5</string>
+    <string name="default_text">There  are  no  cities  to   display.  Add  using  the  “+”  button  from  the  menu</string>
+    <string name="save_city">Save City</string>
+    <string name="city_placeholder">City Name (Eg. Charlotte)</string>
+    <string name="state_placeholder">State Initial (Eg. NC)</string>
+    <string name="current_location">Current Location:</string>
+    <string name="max_temp">Max Temperature:</string>
+    <string name="min_temp">Min Temperature:</string>
+    <string name="feels_like">Feels Like</string>
+    <string name="humidity">Humidity</string>
+    <string name="dew_point">Dew Point</string>
+    <string name="pressure">Pressure</string>
+    <string name="clouds">Clouds</string>
+    <string name="winds">Winds</string>
+
+</resources>
+
