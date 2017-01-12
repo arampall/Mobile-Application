@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="viewdata">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+    <link rel="stylesheet" href="views/css/data.css">
+    <style>
+        .dimension{
+            width:600px;
+            height:400px;
+	    border-radius:3px; 
+	    border: 1px grey solid;
+	    margin:50px;
+        }
+
+        .header-chart{
+	    height:40px;
+	    background-color:#bf6a42;
+	    border-bottom:0.5px grey solid;
+	    margin-bottom:10px;
+	}
+
+	.chart-format{
+	    padding:30px 30px 10px 10px;
+	}
+    </style>
+</head>
+
+<body ng-controller="viewdata-ctrl" ng-init="getprofile()">
+<div class="container-fluid">
+    <div class="row">
+        <!-- Header -->
+        <div class="col-md-12 header">
+            <div class="title">
+                <p>Fitbit</p>
+            </div>
+            <a href="/logout"><img src="views/images/logout.png" class="img-circle" width="20"height="20"><span style="font-size: 16px;color: white;">Logout</span></a>
+        </div>
+        <!-- Profile Picture -->
+        <div class="col-md-9 profilePic">
+            <div class="row">
+                <div class="pic">
+                    <img src="{{profile.avatar}}" class="img-circle dp" width="150" height="150">
+                </div>
+            </div>
+        </div>
+        <!-- Options -->
+        <div class="col-md-9 options">
+            <div class="row">
+                <div class="col-md-3 profile">
+                    <img src="views/images/pro_options.png" class="img-circle" width="20" height="20">
+                    </br>
+                    <a href="#" ng-click="getprofile()"><span>Profile</span></a>
+                </div>
+                <div class="col-md-3 heartRate">
+                    <img src="views/images/heart.png" class="img-circle" width="20" height="20">
+                    </br><a href="#" ng-click="heart()"><span>Heart Rate</span></a>
+                </div>
+                <div class="col-md-3 steps">
+                    <img src="views/images/steps.png" class="img-circle" width="20" height="20">
+                    </br><a href="#" ng-click="steps()"><span>Steps</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Details -->
+        <!-- Profile -->
+        <div class="col-md-9 userDetails" ng-show="show==1">
+            <!--div class="row">
+                <!--img src="views/images/profile.png" class="img img-responsive" width="250" height="250"-->
+            </div-->
+            <div class="col-md-6 col-md-offset-6 profDetails">
+                <h2>{{profile.fullName}}</h2>
+                <table class="table table-inverse">
+                    <tbody>
+                    <tr class="active">
+                        <td>DOB</td>
+                        <td>{{profile.dateOfBirth}}</td>
+                    </tr>
+                    <tr class="success">
+                        <td>Age</td>
+                        <td>{{profile.age}}</td>
+                    </tr>
+                    <tr class="info">
+                        <td>Gender</td>
+                        <td>{{profile.gender}}</td>
+                    </tr>
+                    <tr class="warning">
+                        <td>Height</td>
+                        <td>{{profile.height}}</td>
+                    </tr>
+                    <tr class="danger">
+                        <td>Weight</td>
+                        <td>{{profile.weight}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <!-- Heart Rate -->
+    <div class="col-md-9 userDetails" ng-show="show==2">
+	<div class="row">
+        <div class="dimension">
+	    <div class="header-chart"></div>
+	    <div class="chart-format">
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-series="series" chart-options="options"
+                    chart-dataset-override="datasetOverride" chart-click="onClick">
+            </canvas>
+	    </div>
+        </div>
+	</div>
+    </div>
+    <!-- Steps -->
+    <div class="col-md-9 userDetails" ng-show="show==3">
+        <div class="row dimension">
+	    <div class="header-chart"></div>
+	    <div>
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-series="series" chart-options="options"
+                    chart-dataset-override="datasetOverride" chart-click="onClick">
+            </canvas>
+	    </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    angular.module('viewdata',['chart.js']).
+    controller('viewdata-ctrl', function($scope,$http){
+        $scope.getprofile=function()
+        {
+            $scope.show=1;
+            $http({
+                method:'GET',
+                url:'/getUserData',
+            }).then(function successCallback(response){
+                $scope.show=1;
+
+                //console.log(response.data);
+                $scope.profile = response.data.user;
+            }, function errorCallback(response){
+                //console.log(response);
+            });
+
+
+        };
+
+        $scope.steps = function(){
+            $http({
+                method:'GET',
+                url:'/getStepData'
+            }).then(function successCallback(response){
+                $scope.show=3;
+                //console.log(response);
+                var labels = [], data=[];
+                console.log(response.data["activities-steps"]);
+                response.data["activities-steps"].forEach(function(packet) {
+                   //console.log("labels:"+ labels);
+                    labels.push(new Date(packet.dateTime).getDate());
+                    data.push(packet.value);
+                });
+                $scope.labels = labels;
+                $scope.data = data;
+                $scope.onClick = function (points, evt) {
+                    console.log(points, evt);
+                };
+                $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+                $scope.options = {
+                    scales: {
+                        yAxes: [
+                            {
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            }
+                        ]
+                    }
+                };
+            }, function errorCallback(response){
+
+            })
+        };
+
+        $scope.heart = function(){
+            $http({
+                method:'GET',
+                url:'/getHeartData'
+            }).then(function successCallback(response){
+                $scope.show=2;
+                //console.log(response);
+
+                var labels = [], data=[];
+                var fatburn=[],outofrange=[],cardio=[],peak=[];
+                console.log(response.data["activities-heart"]);
+                response.data["activities-heart"].forEach(function(packet) {
+                     //console.log(response.data["activities-heart"]);
+                    labels.push(new Date(packet.dateTime).getDate());
+                    //console.log("label:"+ labels);
+                 packet.value.heartRateZones.forEach(function(packetData)
+                    {
+
+                       //console.log("packetData:"+packetData.name);
+                        if(packetData.name=="Out of Range")
+                        {
+                            if(packetData.caloriesOut!=undefined)
+                            {
+                                outofrange.push(packetData.caloriesOut);
+								}else{
+                                outofrange.push(0);
+
+                            }
+                        }
+                        else if(packetData.name=="Fat Burn")
+                        {
+                            if(packetData.caloriesOut!=undefined)
+                            {
+                                fatburn.push(packetData.caloriesOut);
+                            }else{
+                                fatburn.push(0);
+                            }
+                        }
+                        else if(packetData.name=="Cardio")
+                        {
+                            if(packetData.caloriesOut!=undefined)
+                            {
+                                cardio.push(packetData.caloriesOut);
+                            }else{
+                                cardio.push(0);
+								}
+                        }
+                        else if(packetData.name=="Peak")
+                        {
+                            if(packetData.caloriesOut!=undefined){
+                                peak.push(packetData.caloriesOut);
+                            }else{
+                                peak.push(0);
+                            }
+                        }
+
+                    });
+         
+                });
+
+             data=[fatburn,outofrange,cardio,peak];
+                //console.log("DATA>>>>"+ data);
+               // data=[fatburn,outofrange,cardio,peak];
+                //data.push(packet.value);
+                $scope.labels = labels;
+                $scope.series=["Fat Burn","Out of Range","Cardio","Peak"];
+                $scope.data = data;
+                $scope.onClick = function (points, evt) {
+                    console.log(points, evt);
+                };
+                $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+                $scope.options = {
+                    scales: {
+                        yAxes: [
+                            {
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            }
+                        ]
+                    }
+                };
+
+                // });
+            }, function errorCallback(response){
+
+            })
+
+        };
+    });
+</script>
+</body>
+</html>
