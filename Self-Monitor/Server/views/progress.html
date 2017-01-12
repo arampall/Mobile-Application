@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="userDetails">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+    <style>
+        #container {
+            margin: 20px;
+            width: 400px;
+            height: 400px;
+            position: relative;
+        }
+    </style>
+</head>
+<body ng-controller="userProgress-ctrl">
+<div layout="row">
+        <div flex="40">
+            <div id="container">
+
+            </div>
+        </div>
+        <span flex></span>
+        <div flex="40"style="margin: auto">
+            <div>
+                <div layout="row"><p class="text-uppercase"><em>Current Step : </em><span flex></span><strong>{{currStep}}</strong></p></bold></div>
+                <div layout="row"><p class="text-uppercase"><em>Status : </em><span flex></span><strong>{{stepinfo.status}}</strong></p></bold></div>
+                <div><p class="text-uppercase"><em>Started on : </em><strong>{{stepinfo.startedOn}}</strong></p></bold></div>
+                <div layout="row">
+                    <button class="btn btn-success" ng-model="next" ng-disabled="next" data-ng-click="promote()">Promote To Next Step</button>
+                </div>
+            </div>
+
+
+
+        </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>
